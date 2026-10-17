@@ -998,3 +998,49 @@
   document.querySelectorAll('[data-count]').forEach(el => countObserver.observe(el));
 
   // Testimonials
+  const reviews = [
+    {n:"Vamshi Krishna", r:"Student · Class 10", q:"Individual attention for every student gave me real confidence. The teachers actually know me by name."},
+    {n:"Mohammed Afnan", r:"Student · Intermediate", q:"Test series and revision sessions are incredibly useful. They literally simulate the real exam."},
+    {n:"Gurupadam", r:"Parent", q:"Best tuition in Kharithabad. Teaching style is totally different from school — concept first, marks follow."},
+    {n:"Shankaraiah Bamandla", r:"Parent", q:"Concepts are explained clearly until fully understood. They never rush the child, ever."},
+    {n:"Sowjanya J", r:"Student · Class 10", q:"My 10th class marks improved drastically thanks to this tuition. From 65% to 92% in one year."},
+    {n:"Sunil Kumar", r:"Parent", q:"The director's passion has positively impacted thousands of students across Hyderabad. Genuine educators."},
+    {n:"Syed Nihal", r:"Student · Class 9", q:"Doubts cleared patiently, regular tests boost performance. I actually look forward to tuition now."},
+    {n:"Jyothi Kukkala", r:"Parent", q:"Formula sheets for every chapter — extremely helpful resource. My daughter revises in just 20 minutes."}
+  ];
+  const slidesEl = document.getElementById('slides');
+  const dotsEl = document.getElementById('dots');
+  reviews.forEach((r, i) => {
+    const initials = r.n.split(' ').map(s=>s[0]).slice(0,2).join('');
+    slidesEl.insertAdjacentHTML('beforeend', `
+      <div class="slide">
+        <div class="testi">
+          <div class="avatar">${initials}</div>
+          <div>
+            <div class="stars">★★★★★</div>
+            <blockquote>"${r.q}"</blockquote>
+            <div class="who"><strong>${r.n}</strong>${r.r}</div>
+          </div>
+        </div>
+      </div>`);
+    const b = document.createElement('button');
+    b.className = 'dot' + (i===0 ? ' active':'');
+    b.setAttribute('aria-label', 'Review ' + (i+1));
+    b.addEventListener('click', () => go(i, true));
+    dotsEl.appendChild(b);
+  });
+  let idx = 0;
+  let timer;
+  const dots = dotsEl.querySelectorAll('.dot');
+  const go = (i, manual) => {
+    idx = (i + reviews.length) % reviews.length;
+    slidesEl.style.transform = `translateX(-${idx*100}%)`;
+    dots.forEach((d,k)=>d.classList.toggle('active', k===idx));
+    if (manual) reset();
+  };
+  const next = () => go(idx+1);
+  const reset = () => { clearInterval(timer); timer = setInterval(next, 4000); };
+  reset();
+</script>
+</body>
+</html>
